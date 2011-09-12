@@ -1,9 +1,8 @@
 class slider
 
   # variables
-  collection = '';
-  wrapper = '.page-wrapper'
-  distance = 240
+  collectionWrapper = '';
+  navigationClass = ''
 
   ###
   init method
@@ -11,7 +10,8 @@ class slider
   slide: (collection) ->
     if jQuery(collection).length is 0
       return
-    @collection = collection
+    @collectionWrapper = collection
+    @navigationClass = collection + '-nav'
     @showNavigation()
     null
 
@@ -20,7 +20,7 @@ class slider
   ###
   showNavigation: ->
     if @checkPosition() is true
-      jQuery('<ul class="nav"><li class="prev">Prev</li><li class="next">Next</li></ul>').appendTo(@collection)
+      jQuery(@collectionWrapper).before('<ul class="slider-nav ' + @navigationClass.replace('.', '') + '"><li class="prev">Prev</li><li class="next">Next</li></ul>')
       # check position again and add event handlers
       @checkPosition()
 
@@ -28,7 +28,7 @@ class slider
   return slider position
   ###
   getPosition: ->
-    position = jQuery(@collection + ' div').css('left')
+    position = jQuery(@collectionWrapper).css('left')
     parseInt(position.replace('px', ''))
 
   ###
@@ -38,7 +38,7 @@ class slider
     width = 0;
     # we are only interested of the last elements position + the width
     # there's probably a better way to do this without the loop
-    jQuery(@collection + ' div').each ->
+    jQuery(@collectionWrapper + ' div').each ->
       width = this.offsetWidth + this.offsetLeft
       null
     width
@@ -47,13 +47,19 @@ class slider
   return the distance to slide
   ###
   getDistance: ->
-    distance
+    # check last element. first element can have wierd margin
+    element = jQuery(@collectionWrapper + ' > div:last-child')
+    width = element.width();
+    width += parseInt(element.css("padding-left"), 10) + parseInt(element.css("padding-right"), 10);
+    width += parseInt(element.css("margin-left"), 10) + parseInt(element.css("margin-right"), 10);
+    width += parseInt(element.css("borderLeftWidth"), 10) + parseInt(element.css("borderRightWidth"), 10);
+    width
 
   ###
   check if slide is at the end
   ###
   isEnd: ->
-    if @getWidth() + @getPosition() <= jQuery(@collection).width() then true else false
+    if @getWidth() + @getPosition() <= jQuery(@collectionWrapper + '-wrapper').width() then true else false
 
   ###
   check if slide is at the start
@@ -72,7 +78,7 @@ class slider
       move = -@getDistance()
 
     # doesn't have to be a div...
-    jQuery('.featured-products > div').stop(true, false).animate({left: @getPosition() - move}, =>
+    jQuery(@collectionWrapper).stop(true, false).animate({left: @getPosition() - move}, =>
       @checkPosition()
     )
 
@@ -85,11 +91,11 @@ class slider
       # disable scroll
       return false;
     else if @isStart()
-      jQuery(@collection + ' .nav .next').one('click', @clickHandler)
+      jQuery(@navigationClass + ' .next').one('click', @clickHandler)
     else if @isEnd()
-      jQuery(@collection + ' .nav .prev').one('click', @clickHandler)
+      jQuery(@navigationClass + ' .prev').one('click', @clickHandler)
     else
-      jQuery(@collection + ' .nav li').one('click', @clickHandler)
+      jQuery(@navigationClass + ' li').one('click', @clickHandler)
     true
 
 window.slide = (collection) ->
