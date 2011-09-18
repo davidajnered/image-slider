@@ -86,7 +86,7 @@
       */
     slider.prototype.clickHandler = function(event) {
       var clicked, move;
-      clicked = event.srcElement.className;
+      clicked = jQuery(event.currentTarget).attr('class');
       if (clicked === 'next') {
         move = this.getDistance();
       }

@@ -71,7 +71,7 @@ class slider
   event handler
   ###
   clickHandler:(event) =>
-    clicked = event.srcElement.className
+    clicked = jQuery(event.currentTarget).attr('class')
     if clicked is 'next'
       move = @getDistance()
     if clicked is 'prev'
