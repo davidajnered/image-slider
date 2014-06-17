@@ -1,9 +1,7 @@
-Structure
+Image Slider
+==
 
-- collection-wrapper
- |- collection
-   |- box
-   |- box
-   |- box
-
-Send collection class as parameter to slide fuction
+Super simple image slider. Call slide on your image collection wrapper, a **ul** for example
+```
+$(selector).slide();
+```
