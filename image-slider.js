@@ -1,24 +1,14 @@
 /**
- * jQuery slider plugin.
+ * jQuery image slider plugin
+ *
  * Author: David Ajnered
  */
 
 (function($) {
-
-    /**
-     * Class for wrapper div.
-     */
-    var sliderWrapperClass = 'slider-wrapper';
-
     /**
      * jQuery object for sliderWrapper.
      */
     var $sliderWrapper;
-
-    /**
-     * Slider navigation class.
-     */
-    var sliderNavigationClass = 'slider-nav';
 
     /**
      * Slider navigation jQuery object.
@@ -27,13 +17,10 @@
 
     /**
      * Global object containing user settings.
+     *
+     * Currently not used
      */
     var options = {};
-
-    /**
-     * The class of the collection to slide.
-     */
-    var sliderClass;
 
     /**
      * jQuery object for slider.
@@ -45,8 +32,7 @@
      */
     $.fn.slide = function(userOptions) {
         options = {}
-        sliderClass = this.selector;
-        $slider = $(sliderClass);
+        $slider = $(this.selector);
 
         // If list, remove list style.
         if ($slider.prop('tagName') == 'UL') {
@@ -67,6 +53,8 @@
      * Init function.
      */
     function init() {
+        var sliderWrapperClass = 'slider-wrapper';
+
         $slider.wrap('<div class="' + sliderWrapperClass + '"></div>');
         $sliderWrapper = $('.' + sliderWrapperClass).css({position: 'relative'});
 
@@ -100,6 +88,8 @@
      * Add slider navigation to DOM.
      */
     function showNavigation() {
+        var sliderNavigationClass = 'slider-nav';
+
         $sliderWrapper.before(
             '<ul class="' + sliderNavigationClass + '">' +
               '<li class="prev"><a href="#" class="prev">Prev</a></li>' +
